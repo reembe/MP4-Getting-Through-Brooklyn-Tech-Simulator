@@ -6,7 +6,7 @@ plugins {
     id "io.github.0ffz.github-packages" version "1.2.1" // Plugin for anonymous inclusion of artifacts hosted in github package registry
 }
 
-description = 'Game application'
+description = 'GettingThroughBrooklynTechSimulator application'
 
 java {
     sourceCompatibility = '17'
@@ -15,13 +15,14 @@ java {
 
 ext.jmonkeyengineVersion = '3.6.1-stable'
 
-mainClassName = 'game.Game'
+mainClassName = 'gettingthroughbrooklyntechsimulator.GettingThroughBrooklynTechSimulator'
 if (!hasProperty('mainClass')) {
     ext.mainClass = mainClassName
 }
 jar.manifest.attributes('Main-Class': mainClassName)
 
 repositories {
+    maven githubPackage.invoke("riccardobl/undefined")
     mavenCentral()
     mavenLocal()
 }
@@ -41,10 +42,15 @@ dependencies {
     runtimeOnly 'org.jmonkeyengine:jme3-jogg:' + jmonkeyengineVersion
     runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jmonkeyengineVersion
 
-
+    implementation 'org.jmonkeyengine:jme3-terrain:' + jmonkeyengineVersion
+    implementation 'org.jmonkeyengine:jme3-effects:' + jmonkeyengineVersion
+    implementation 'org.jmonkeyengine:jme3-niftygui:' + jmonkeyengineVersion
+    implementation 'org.jmonkeyengine:jme3-jbullet:' + jmonkeyengineVersion
     runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jmonkeyengineVersion
 
-
+    implementation 'com.simsilica:lemur:1.16.0'
+    implementation 'com.simsilica:lemur-proto:1.13.0'
+    implementation 'wf.frk:jme-igui:0.1.2'
 }
 
 distZip {
@@ -80,17 +86,17 @@ task downloadAndUnzipWindowsJre(dependsOn: downloadWindowsJre, type: Copy) {
 task buildWindowsDistribution(dependsOn: [distZip, downloadAndUnzipWindowsJre], type: Copy)
 {
     group 'distribution'
-    from files("${projectDir}/scripts/desktopDeployment/Game.bat"), zipTree(distZip.archiveFile), "${buildDir}/jres/windowsJre"
-    into new File(buildDir, 'distributions/Game-windows')
+    from files("${projectDir}/scripts/desktopDeployment/GettingThroughBrooklynTechSimulator.bat"), zipTree(distZip.archiveFile), "${buildDir}/jres/windowsJre"
+    into new File(buildDir, 'distributions/GettingThroughBrooklynTechSimulator-windows')
     includeEmptyDirs false
     exclude 'bin/**' //we are adding our own run scripts, exclude the ones coming from distZip
 }
 
 task zipWindowsDistribution( dependsOn:buildWindowsDistribution, type: Zip) {
     group 'distribution'
-    archiveFileName = "Game-windows.zip"
+    archiveFileName = "GettingThroughBrooklynTechSimulator-windows.zip"
     destinationDirectory = file("$buildDir/distributions")
-    from "$buildDir/distributions/Game-windows"
+    from "$buildDir/distributions/GettingThroughBrooklynTechSimulator-windows"
 }
 
 
@@ -112,26 +118,26 @@ task downloadAndUnzipLinuxJre(dependsOn: downloadLinuxJre, type: Copy) {
 task buildLinuxDistribution(dependsOn: [distZip, downloadAndUnzipLinuxJre], type: Copy)
 {
     group 'distribution'
-    from files("${projectDir}/scripts/desktopDeployment/Game.sh"){
+    from files("${projectDir}/scripts/desktopDeployment/GettingThroughBrooklynTechSimulator.sh"){
         fileMode 0755
     }
     from zipTree(distZip.archiveFile)
     from "${buildDir}/jres/linuxJre"
-    into new File(buildDir, 'distributions/Game-linux')
+    into new File(buildDir, 'distributions/GettingThroughBrooklynTechSimulator-linux')
     includeEmptyDirs false
     exclude 'bin/**' //we are adding our own run scripts, exclude the ones coming from distZip
 }
 
 task zipLinuxDistribution( dependsOn:buildLinuxDistribution, type: Zip) {
     group 'distribution'
-    archiveFileName = "Game-linux.tar.gz"
+    archiveFileName = "GettingThroughBrooklynTechSimulator-linux.tar.gz"
     destinationDirectory = file("$buildDir/distributions")
-    from ("$buildDir/distributions/Game-linux"){
+    from ("$buildDir/distributions/GettingThroughBrooklynTechSimulator-linux"){
       include('**.sh')
       include('**/java')
       fileMode 0755
     }
-    from ("$buildDir/distributions/Game-linux"){
+    from ("$buildDir/distributions/GettingThroughBrooklynTechSimulator-linux"){
         exclude('**.sh')
         exclude('**/java')
     }
@@ -156,26 +162,26 @@ task downloadAndUnzipMacJre(dependsOn: downloadMacJre, type: Copy) {
 task buildMacDistribution(dependsOn: [distZip, downloadAndUnzipMacJre], type: Copy)
 {
     group 'distribution'
-    from files("${projectDir}/scripts/desktopDeployment/Game.command"){
+    from files("${projectDir}/scripts/desktopDeployment/GettingThroughBrooklynTechSimulator.command"){
         fileMode 0755
     }
     from zipTree(distZip.archiveFile) 
     from "${buildDir}/jres/macJre"
-    into new File(buildDir, 'distributions/Game-mac')
+    into new File(buildDir, 'distributions/GettingThroughBrooklynTechSimulator-mac')
     includeEmptyDirs false
     exclude 'bin/**' //we are adding our own run scripts, exclude the ones coming from distZip
 }
 
 task zipMacDistribution( dependsOn:buildMacDistribution, type: Zip) {
     group 'distribution'
-    archiveFileName = "Game-mac.tar.gz"
+    archiveFileName = "GettingThroughBrooklynTechSimulator-mac.tar.gz"
     destinationDirectory = file("$buildDir/distributions")
-    from ("$buildDir/distributions/Game-mac"){
+    from ("$buildDir/distributions/GettingThroughBrooklynTechSimulator-mac"){
       include('**.command')
       include('**/java')
       fileMode 0755
     }
-    from ("$buildDir/distributions/Game-mac"){
+    from ("$buildDir/distributions/GettingThroughBrooklynTechSimulator-mac"){
         exclude('**.command')
         exclude('**/java')
     }
@@ -209,6 +215,6 @@ task cleanSOs(type: Delete) {
 
 task fund(){
     doLast {
-       java.awt.Desktop.desktop.browse "https://start.jmonkeyengine.org/#!funding=JME_DESKTOP".toURI()
+       java.awt.Desktop.desktop.browse "https://start.jmonkeyengine.org/#!funding=JME_DESKTOP,JME_TERRAIN,JME_EFFECTS,JME_NIFTY,LEMUR,16283%2Fjme-igui,JME_JBULLET".toURI()
     }
 }

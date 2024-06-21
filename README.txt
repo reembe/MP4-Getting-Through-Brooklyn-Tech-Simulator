@@ -1,6 +1,6 @@
-# game
+# Getting Through Brooklyn Tech Simulator
 
-This is the readme for game, try to keep it up to date with any information future-you will wish past-you
+This is the readme for Getting Through Brooklyn Tech Simulator, try to keep it up to date with any information future-you will wish past-you
 remembered to write down
 
 ## Project set up
@@ -14,11 +14,11 @@ Open this application in your preferred IDE (IntelliJ and Eclipse will support G
 
 ### Development in IntelliJ
 - Download the latest version of IntelliJ Community (IntelliJ Ultimate is a paid for version the features of which you may consider useful but are not essential for a JMonkey project)
-- File > Open > select the top level folder of this project ( i.e. Game) > Ok.
+- File > Open > select the top level folder of this project ( i.e. GettingThroughBrooklynTechSimulator) > Ok.
 - The project will open with your project files on the left had side (IntelliJ may need to "think" for a couple of seconds before they appear)
 - IntelliJ may say "No SDK set up" and prompt you to download one, follow its instructions and allow it to download a java 11 JDK. A JDK is used for compiling java applications, a JRE is used for running them.
 - You can now add more java source files or assets to the project
-- To run the project find Game.java (which will be in under src/main/java/game) and right click > Run 'Game'
+- To run the project find GettingThroughBrooklynTechSimulator.java (which will be in under src/main/java/gettingthroughbrooklyntechsimulator) and right click > Run 'GettingThroughBrooklynTechSimulator'
 
 ## How to package the game
 
